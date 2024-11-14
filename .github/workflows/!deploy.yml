@@ -6,12 +6,10 @@ on:
     branches:
       - main
       - stage
+  workflow_dispatch:
 
 permissions:
   contents: read
-
-on: 
-  workflow_dispatch:
 
 jobs:
   build:
@@ -45,11 +43,11 @@ jobs:
         with:
           name: build
           path: ./dist
+
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@
-        env: 
-          HOST: ${{ secrets.EC2_HOST }}
-          USERNAME: ${{ secrets.EC2_USER }}
-          KEY: ${{ secrets.EC2_SSH_KEY}}
-        run: 
-          sh ./scripts/app.deploy.sh
+        uses: appleboy/ssh-action@v0.1.3   
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: sh ./scripts/app.deploy.sh
