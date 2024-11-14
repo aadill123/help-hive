@@ -56,7 +56,7 @@ jobs:
           path: ./build
 
       - name: Connect and Deploy to EC2
-        uses: appleboy/scp-action@v0.1.3
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
