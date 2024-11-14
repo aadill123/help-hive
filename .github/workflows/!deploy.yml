@@ -10,16 +10,19 @@ on:
 permissions:
   contents: read
 
+on: 
+  workflow_dispatch:
+
 jobs:
   build:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
 
@@ -42,3 +45,11 @@ jobs:
         with:
           name: build
           path: ./dist
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@
+        env: 
+          HOST: ${{ secrets.EC2_HOST }}
+          USERNAME: ${{ secrets.EC2_USER }}
+          KEY: ${{ secrets.EC2_SSH_KEY}}
+        run: 
+          sh ./scripts/app.deploy.sh
