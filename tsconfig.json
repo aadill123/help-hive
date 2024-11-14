@@ -17,6 +17,17 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "typeRoots": ["./node_modules/@types", "./node_modules/@prisma"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@prisma"
+    ],
+    "paths": {
+      "@helphive/prisma": [
+        "libs/prisma/src"
+      ],
+      "@helphive/prisma/*": [
+        "libs/prisma/src/*"
+      ]
+    }
   }
 }

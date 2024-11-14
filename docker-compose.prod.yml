@@ -4,19 +4,18 @@ services:
   app:
     container_name: help-hive
     build:
-      context: ./
+      context: .
       dockerfile: Dockerfile
-    volumes:
-      - ./:/usr/local/help-hive
+      target: production  
     env_file:
       - .env
     ports:
       - "5000:5000"
-    command: sh -c "npx prisma generate && yarn start:dev"
     depends_on:
       - database
     networks:
       - app-network
+    command: node dist/main.js   
 
   database:
     image: "postgres:17"

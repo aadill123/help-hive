@@ -4,12 +4,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { Prisma, SharedModule } from './shared/shared.module';
-
+import { SharedModule } from './shared/shared.module';
+import { PrismaModule } from '@helphive/prisma';
 
 @Module({
   imports: [
-    Prisma.forRoot({
+    PrismaModule.forRoot({
       isGlobal: true,
     }),
     AuthModule,
@@ -19,22 +19,23 @@ import { Prisma, SharedModule } from './shared/shared.module';
       {
         path: '/api',
         module: AppModule,
-      }, {
+      },
+      {
         path: '/api',
         children: [
           {
-            path: '/',
-            module: AuthModule
+            path: '/auth',
+            module: AuthModule,
           },
           {
             path: '/',
-            module: UserModule
-          }
-        ]
-      }
-    ])
+            module: UserModule,
+          },
+        ],
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,26 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from '../dto/create-auth.dto';
-import { UpdateAuthDto } from '../dto/update-auth.dto';
+import { UpdateAuthDto } from '../dto';
+import { IRegisterUser } from '../interfaces';
+import { AuthRepository } from '../repositories';
+import { UserAlreadExistError, UserNotFoundError } from 'src/shared/errors';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
-
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  constructor(private readonly authRepository: AuthRepository) {}
+  async create(args: IRegisterUser) {
+    const isUserExist = await this.authRepository.findOne({ where: { email: args.email } });
+    if (isUserExist) {
+      throw UserAlreadExistError()
+    }
+    return await this.authRepository.createOne(args);
   }
 }

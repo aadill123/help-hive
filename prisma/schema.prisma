@@ -15,16 +15,29 @@ datasource db {
 
 model User {
   id         Int      @id @default(autoincrement())
-  first_name String
-  last_name  String
+  firstName  String
+  lastName   String
   email      String   @unique
   phone      String?
   address    String?
   city       String    
   state      String   
   role       Role     @default(USER)
+  password   String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  tasker     Tasker?
+  deleted    Boolean  @default(false)
+}
+
+
+model Tasker {
+  id              Int      @id @default(autoincrement())
+  userId          Int      @unique
+  skills          String[]    
+  availability    String
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
