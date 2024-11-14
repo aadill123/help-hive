@@ -24,7 +24,7 @@ jobs:
           node-version: '20'
 
       - name: Cache Node.js modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -38,7 +38,7 @@ jobs:
         run: yarn build
 
       - name: Archive Production Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build
           path: ./dist
