@@ -43,6 +43,14 @@ jobs:
         with:
           name: build
           path: ./dist
+      - name: Connect to EC2
+        uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "./"   
+        target: "/home/ubuntu/help-hive"
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -50,5 +58,5 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          run: ./scripts/app-deploy.sh
+          script: ./scripts/app-deploy.sh
           debug: true
